@@ -1,0 +1,752 @@
+/* ==========================================================================
+   MOHIT PRAJAPATI — MINIMALIST SECTION-BY-SECTION SNAP PORTFOLIO
+   No Top Menu, Fixed Left Social Bar, Right Dot Navigation, Bottom Copyright
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Typography & Global Tokens
+   -------------------------------------------------------------------------- */
+:root {
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --max-width: 980px;
+}
+
+[data-bs-theme="light"] {
+  --bs-body-bg: #ffffff;
+  --bs-body-color: #0f172a;
+  --pattern-opacity: 0.04;
+  --pattern-color: #000000;
+  --custom-card-bg: #ffffff;
+  --custom-card-border: #e2e8f0;
+  --dot-bg: #cbd5e1;
+  --dot-active: #0f172a;
+  
+  --social-icon-color: #1e293b;
+  --social-icon-hover: #000000;
+  --social-line-color: #94a3b8;
+
+  --pill-bg: #ffffff;
+  --pill-text: #374151;
+  --pill-border: #d1d5db;
+  --pill-hover-bg: #f8fafc;
+  --pill-hover-text: #0f172a;
+  --pill-hover-border: #0f172a;
+  --pill-active-bg: #0f172a;
+  --pill-active-text: #ffffff;
+  --pill-active-border: #0f172a;
+}
+
+[data-bs-theme="dark"] {
+  --bs-body-bg: #090d16;
+  --bs-body-color: #f8fafc;
+  --pattern-opacity: 0.05;
+  --pattern-color: #94a3b8;
+  --custom-card-bg: #111827;
+  --custom-card-border: #1f293d;
+  --dot-bg: #334155;
+  --dot-active: #f8fafc;
+
+  --social-icon-color: #94a3b8;
+  --social-icon-hover: #ffffff;
+  --social-line-color: #334155;
+
+  --pill-bg: #111827;
+  --pill-text: #cbd5e1;
+  --pill-border: #1f293d;
+  --pill-hover-bg: #1e293b;
+  --pill-hover-text: #ffffff;
+  --pill-hover-border: #475569;
+  --pill-active-bg: #f8fafc;
+  --pill-active-text: #090d16;
+  --pill-active-border: #f8fafc;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Scrolling handled by .scroll-container */
+  font-family: var(--font-main);
+  letter-spacing: -0.01em;
+  font-size: 1rem;
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Light Pattern Background Overlay */
+.bg-pattern-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  opacity: var(--pattern-opacity);
+  background-image: radial-gradient(var(--pattern-color) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* --------------------------------------------------------------------------
+   2. Floating Theme Toggle (Top-Right)
+   -------------------------------------------------------------------------- */
+.floating-theme-wrap {
+  position: fixed;
+  top: 24px;
+  right: 28px;
+  z-index: 1050;
+}
+
+.btn-theme-toggle {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 1.1rem;
+  background-color: var(--custom-card-bg);
+  border-color: var(--custom-card-border);
+  color: var(--social-icon-color);
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-theme-toggle:hover {
+  transform: scale(1.1);
+  color: var(--social-icon-hover);
+  background-color: var(--pill-hover-bg);
+}
+
+[data-bs-theme="light"] .icon-light { display: none; }
+[data-bs-theme="light"] .icon-dark { display: block; }
+[data-bs-theme="dark"] .icon-light { display: block; }
+[data-bs-theme="dark"] .icon-dark { display: none; }
+
+/* --------------------------------------------------------------------------
+   3. Scroll Snap Container & Snap Sections
+   -------------------------------------------------------------------------- */
+.scroll-container {
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+
+.snap-section {
+  min-height: 100vh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1.5rem 2rem;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.custom-container {
+  max-width: var(--max-width);
+  width: 100%;
+}
+
+.custom-container-wide {
+  max-width: 1180px;
+}
+
+/* --------------------------------------------------------------------------
+   4. Fixed Vertical Social Icons on Left
+   -------------------------------------------------------------------------- */
+.fixed-social-sidebar {
+  position: fixed;
+  left: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  z-index: 1000;
+}
+
+.social-side-icon {
+  font-size: 1.85rem;
+  color: var(--social-icon-color);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.social-side-icon:hover {
+  color: var(--social-icon-hover);
+  transform: translateX(4px) scale(1.2);
+}
+
+.social-side-icon::after {
+  content: attr(data-title);
+  position: absolute;
+  left: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--dot-active);
+  color: var(--bs-body-bg);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.social-side-icon:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(6px);
+}
+
+.social-line {
+  width: 2px;
+  height: 48px;
+  background-color: var(--social-line-color);
+  margin-top: 6px;
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   5. Floating Side Dot Navigation on Right
+   -------------------------------------------------------------------------- */
+.side-dot-nav {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 1000;
+}
+
+.dot-item {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--dot-bg);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  text-decoration: none;
+}
+
+.dot-item:hover,
+.dot-item.active {
+  background-color: var(--dot-active);
+  transform: scale(1.4);
+}
+
+.dot-item::after {
+  content: attr(data-title);
+  position: absolute;
+  right: 26px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--dot-active);
+  color: var(--bs-body-bg);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dot-item:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(-6px);
+}
+
+/* --------------------------------------------------------------------------
+   6. Custom Styled Nav Pills
+   -------------------------------------------------------------------------- */
+.custom-skills-pills .nav-link {
+  background-color: var(--pill-bg);
+  color: var(--pill-text);
+  border: 1.5px solid var(--pill-border);
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.custom-skills-pills .nav-link:hover {
+  background-color: var(--pill-hover-bg);
+  color: var(--pill-hover-text);
+  border-color: var(--pill-hover-border);
+}
+
+.custom-skills-pills .nav-link.active {
+  background-color: var(--pill-active-bg) !important;
+  color: var(--pill-active-text) !important;
+  border-color: var(--pill-active-border) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+/* --------------------------------------------------------------------------
+   7. Hero Avatar & Profile
+   -------------------------------------------------------------------------- */
+.avatar-wrapper {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--custom-card-border);
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* --------------------------------------------------------------------------
+   8. Cards & Components
+   -------------------------------------------------------------------------- */
+.custom-card {
+  background-color: var(--custom-card-bg);
+  border-color: var(--custom-card-border) !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.custom-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Service & Component Icon Accents */
+.icon-box-lg {
+  width: 52px;
+  height: 52px;
+  background-color: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.2) !important;
+  color: #4f46e5;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+}
+
+.icon-box-lg i {
+  color: inherit;
+}
+
+.custom-card:hover .icon-box-lg {
+  transform: translateY(-2px) scale(1.04);
+  background-color: rgba(99, 102, 241, 0.16);
+  border-color: rgba(99, 102, 241, 0.4) !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.2);
+}
+
+/* Experience Connected Timeline */
+.timeline-wrapper {
+  position: relative;
+}
+
+.timeline-item {
+  position: relative;
+}
+
+.timeline-marker {
+  position: relative;
+  width: 36px;
+  flex-shrink: 0;
+}
+
+.timeline-badge {
+  width: 36px;
+  height: 36px;
+  background-color: #f1f5f9;
+  border: 1.5px solid #cbd5e1;
+  color: #4f46e5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.timeline-line {
+  flex-grow: 1;
+  width: 2px;
+  background: linear-gradient(to bottom, #818cf8, #cbd5e1);
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border-radius: 2px;
+}
+
+.timeline-card {
+  background-color: transparent;
+  border-color: var(--custom-card-border) !important;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.timeline-card:hover {
+  border-color: rgba(99, 102, 241, 0.4) !important;
+  background-color: rgba(248, 250, 252, 0.8);
+  transform: translateX(3px);
+}
+
+.timeline-item:hover .timeline-badge {
+  background-color: #4f46e5;
+  color: #ffffff;
+  border-color: #4f46e5;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+  transform: scale(1.1);
+}
+
+.skill-card-enhanced {
+  padding: 1.25rem 1.4rem !important;
+}
+
+/* Project Preview Banners */
+.crm-bg { background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%); }
+.moneylens-bg { background: linear-gradient(135deg, #dcfce7 0%, #fef9c3 100%); }
+.skymail-bg { background: linear-gradient(135deg, #e0f2fe 0%, #f1f5f9 100%); }
+
+.project-mockup-banner {
+  min-height: 76px;
+  padding: 0.75rem 1rem;
+}
+
+/* Contact Pills */
+.contact-pill-btn {
+  background-color: var(--custom-card-bg);
+  border-color: var(--custom-card-border) !important;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.contact-pill-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-purple {
+  color: #7c3aed;
+}
+
+/* --------------------------------------------------------------------------
+   9. Bottom Copyright
+   -------------------------------------------------------------------------- */
+.bottom-copyright {
+  border-top: 1px solid var(--custom-card-border);
+  margin-top: auto;
+}
+
+/* --------------------------------------------------------------------------
+   10. Dark Mode Precise Contrast Overrides
+   -------------------------------------------------------------------------- */
+[data-bs-theme="dark"] body {
+  background-color: #090d16 !important;
+  color: #f8fafc !important;
+}
+
+[data-bs-theme="dark"] h1,
+[data-bs-theme="dark"] h2,
+[data-bs-theme="dark"] h3,
+[data-bs-theme="dark"] h4,
+[data-bs-theme="dark"] h5,
+[data-bs-theme="dark"] h6,
+[data-bs-theme="dark"] .text-body {
+  color: #f8fafc !important;
+}
+
+[data-bs-theme="dark"] .text-secondary {
+  color: #94a3b8 !important;
+}
+
+[data-bs-theme="dark"] .text-muted {
+  color: #64748b !important;
+}
+
+[data-bs-theme="dark"] strong {
+  color: #ffffff !important;
+}
+
+/* Buttons in Dark Mode */
+[data-bs-theme="dark"] .btn-dark {
+  background-color: #f8fafc !important;
+  color: #090d16 !important;
+  border-color: #f8fafc !important;
+}
+
+[data-bs-theme="dark"] .btn-dark:hover {
+  background-color: #e2e8f0 !important;
+  color: #000000 !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-bs-theme="dark"] .btn-outline-dark {
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+  background-color: transparent !important;
+}
+
+[data-bs-theme="dark"] .btn-outline-dark:hover {
+  border-color: #f8fafc !important;
+  color: #090d16 !important;
+  background-color: #f8fafc !important;
+}
+
+/* Badges in Dark Mode */
+[data-bs-theme="dark"] .badge.bg-body-secondary {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+  border-color: #334155 !important;
+}
+
+[data-bs-theme="dark"] .badge.bg-body {
+  background-color: #090d16 !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+[data-bs-theme="dark"] .badge.bg-success-subtle {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Form inputs in Dark Mode */
+[data-bs-theme="dark"] .form-control {
+  background-color: #090d16 !important;
+  border-color: #1f293d !important;
+  color: #f8fafc !important;
+}
+
+[data-bs-theme="dark"] .form-control:focus {
+  background-color: #0d1322 !important;
+  border-color: #60a5fa !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 0 0.25rem rgba(96, 165, 250, 0.25) !important;
+}
+
+[data-bs-theme="dark"] .form-control::placeholder {
+  color: #64748b !important;
+}
+
+/* Dropdown Menu in Dark Mode */
+[data-bs-theme="dark"] .dropdown-menu {
+  background-color: #111827 !important;
+  border-color: #1f293d !important;
+}
+
+[data-bs-theme="dark"] .dropdown-item {
+  color: #e2e8f0 !important;
+}
+
+[data-bs-theme="dark"] .dropdown-item:hover {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+}
+
+/* Project mockups in Dark Mode */
+[data-bs-theme="dark"] .crm-bg {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.18) 0%, rgba(139, 92, 246, 0.18) 100%) !important;
+  border: 1px solid rgba(139, 92, 246, 0.3) !important;
+}
+
+[data-bs-theme="dark"] .moneylens-bg {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(34, 197, 94, 0.18) 100%) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+[data-bs-theme="dark"] .skymail-bg {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.18) 0%, rgba(59, 130, 246, 0.18) 100%) !important;
+  border: 1px solid rgba(14, 165, 233, 0.3) !important;
+}
+
+[data-bs-theme="dark"] .custom-card:hover {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5) !important;
+  border-color: #334155 !important;
+}
+
+[data-bs-theme="dark"] .text-purple {
+  color: #c084fc !important;
+}
+
+/* Luminous Icon Boxes in Dark Mode */
+[data-bs-theme="dark"] .icon-box-lg {
+  background-color: rgba(99, 102, 241, 0.14) !important;
+  border-color: rgba(129, 140, 248, 0.3) !important;
+  color: #a5b4fc !important;
+  box-shadow: 0 0 14px rgba(99, 102, 241, 0.12);
+}
+
+[data-bs-theme="dark"] .custom-card:hover .icon-box-lg {
+  background-color: rgba(99, 102, 241, 0.25) !important;
+  border-color: rgba(129, 140, 248, 0.6) !important;
+  color: #c7d2fe !important;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.35) !important;
+}
+
+/* Experience Connected Timeline in Dark Mode */
+[data-bs-theme="dark"] .timeline-badge {
+  background-color: #0f172a;
+  border-color: rgba(129, 140, 248, 0.35);
+  color: #818cf8;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.15);
+}
+
+[data-bs-theme="dark"] .timeline-line {
+  background: linear-gradient(to bottom, #6366f1, rgba(99, 102, 241, 0.2));
+}
+
+[data-bs-theme="dark"] .timeline-card {
+  border-color: #1f293d !important;
+  background-color: rgba(17, 24, 39, 0.5);
+}
+
+[data-bs-theme="dark"] .timeline-card:hover {
+  background-color: #141e30;
+  border-color: rgba(129, 140, 248, 0.5) !important;
+}
+
+[data-bs-theme="dark"] .timeline-item:hover .timeline-badge {
+  background-color: #6366f1;
+  color: #ffffff;
+  border-color: #818cf8;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   11. Responsive Media Queries
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+  .side-dot-nav {
+    display: none;
+  }
+
+  .fixed-social-sidebar {
+    position: static;
+    transform: none;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 1.75rem;
+  }
+
+  .social-line {
+    display: none;
+  }
+
+  .social-side-icon::after {
+    display: none;
+  }
+
+  .snap-section {
+    padding-top: 3.5rem;
+    padding-bottom: 2.5rem;
+    height: auto;
+    min-height: 100vh;
+  }
+}
+
+@media (max-height: 720px) {
+  .snap-section {
+    padding-top: 2.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .avatar-wrapper {
+    width: 170px;
+    height: 170px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   12. Print / PDF Resume Stylesheet (@media print)
+   -------------------------------------------------------------------------- */
+@media print {
+  html, body {
+    height: auto !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 10.5pt !important;
+  }
+
+  .scroll-container {
+    height: auto !important;
+    overflow: visible !important;
+    scroll-snap-type: none !important;
+    position: static !important;
+  }
+
+  .snap-section {
+    min-height: auto !important;
+    height: auto !important;
+    padding: 1.5rem 0 !important;
+    display: block !important;
+    scroll-snap-align: none !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Hide interactive / screen-only components */
+  .floating-theme-wrap,
+  .fixed-social-sidebar,
+  .side-dot-nav,
+  .btn-theme-toggle,
+  .bg-pattern-overlay,
+  .toast-container,
+  .dropdown-toggle::after,
+  #contactForm,
+  .cv-dropdown-btn {
+    display: none !important;
+  }
+
+  .custom-container,
+  .custom-container-wide {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .custom-card {
+    border: 1px solid #d1d5db !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  h1, h2, h3, h4, h5, h6,
+  .text-body,
+  .text-secondary,
+  .text-muted {
+    color: #000000 !important;
+  }
+
+  .badge {
+    border: 1px solid #9ca3af !important;
+    color: #000000 !important;
+    background: #f3f4f6 !important;
+  }
+
+  .project-mockup-banner {
+    background: #f3f4f6 !important;
+    border: 1px solid #e5e7eb !important;
+  }
+
+  a {
+    text-decoration: none !important;
+    color: #000000 !important;
+  }
+}
